@@ -12,7 +12,7 @@ module Stateflow
 
     def fire(current_state, klass, options)
       transition = @transitions.select{ |t| t.from.include? current_state.name }.first
-      no_transition_found(current_state.name) if transition.nil?
+      no_transition_found(current_state.name, klass) if transition.nil?
 
       return false unless transition.can_transition?(klass)
 
@@ -33,9 +33,9 @@ module Stateflow
       @transition_missing = block
     end
 
-    def no_transition_found(from_state)
+    def no_transition_found(from_state, klass)
       raise NoTransitionFound.new("No transition found for event #{@name}") unless @transition_missing
-      @transition_missing.call(from_state)
+      @transition_missing.call(from_state, klass)
     end
 
     def no_state_found(target_state)

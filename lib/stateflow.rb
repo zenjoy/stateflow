@@ -45,7 +45,7 @@ module Stateflow
   attr_accessor :_previous_state
 
   def current_state
-    @current_state ||= load_from_persistence.nil? ? machine.initial_state : machine.states[load_from_persistence.to_sym]
+    load_from_persistence.nil? ? machine.initial_state : machine.states[load_from_persistence.to_sym]
   end
 
   def set_current_state(new_state, options = {})
